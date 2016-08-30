@@ -11,8 +11,8 @@ int jobend(int* state, int size){
   return 1;
 }
 
-void judge(char strs[MAXNUM][MAXCHAR], int size, int* state, char startchar, int* resultAddr){
-  int i, j;
+void judge(char strs[MAXNUM][2], int size, int* state, char startchar, int* resultAddr){
+  int i;
 
   for(i = 0; i < size; i++){
 
@@ -22,18 +22,12 @@ void judge(char strs[MAXNUM][MAXCHAR], int size, int* state, char startchar, int
 
       state[i] = 1;
 
-      //get end char
-      j = 0;
-      while(strs[i][j] != '\0'){
-        j++;
-      }
-
       if(jobend(state, size) == 1){
         *resultAddr = 1;
         return;
       }
       else{
-        judge(strs, size, state, strs[i][j-1], resultAddr);
+        judge(strs, size, state, strs[i][1], resultAddr);
         //restore state
         state[i] = 0;
       }
@@ -45,13 +39,21 @@ int main(){
 
   //input
   int num;
-  char strs[MAXNUM][MAXCHAR];
-  int i;
+  char strsinput[MAXNUM][MAXCHAR];
+  char strs[MAXNUM][2];
+  int i, j;
 
   while(scanf("%d", &num) != EOF){
     //scanf("%d", &num);
     for(i = 0; i < num; i++){
-      scanf("%s", strs[i]);
+      scanf("%s", strsinput[i]);
+      j = 0;
+      while(strsinput[i][j] != '\0'){
+        j++;
+      }
+      strs[i][0] = strsinput[i][0];
+      strs[i][1] = strsinput[i][j-1];
+      //printf("%c%c ", strs[i][0], strs[i][1]);
     }
 
     //回溯法
